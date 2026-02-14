@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Error | Página no encontrada</title>
+
+  <!-- Tailwind via CDN (para prototipo rápido) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Flowbite -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.css" rel="stylesheet" />
+</head>
+<body class="bg-gray-50">
+  <main class="min-h-screen flex items-center justify-center px-6 py-12">
+    <div class="w-full max-w-lg text-center">
+      <div class="flex justify-center mb-6">
+        <span class="inline-flex items-center justify-center w-14 h-14 rounded-full bg-red-100 text-red-700">
+          <!-- icon -->
+          <svg class="w-7 h-7" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v4m0 4h.01M10.29 3.86l-7.4 12.8A2 2 0 004.62 20h14.76a2 2 0 001.73-3.34l-7.4-12.8a2 2 0 00-3.46 0z"/>
+          </svg>
+        </span>
+      </div>
+
+      <p class="text-sm font-medium text-gray-500">Error 404</p>
+      <h1 class="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+        Esta página no existe 😿
+      </h1>
+      <p class="mt-4 text-gray-600">
+        Tal vez movimos la ruta, borramos el recurso, o el link está mal escrito.
+      </p>
+
+      <div class="mt-8 flex flex-col sm:flex-row gap-3 justify-center">
+        <a href="/" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+          Volver al inicio
+        </a>
+
+        <button onclick="history.back()" class="inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium text-gray-900 bg-white border border-gray-200 rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200">
+          Regresar
+        </button>
+      </div>
+
+      <!-- opcional: card de ayuda -->
+      <div class="mt-10 p-5 bg-white border border-gray-200 rounded-lg shadow-sm text-left">
+        <h2 class="text-base font-semibold text-gray-900">¿Qué puedes hacer?</h2>
+        <ul class="mt-3 space-y-2 text-sm text-gray-600 list-disc list-inside">
+          <li>Revisa que la URL esté bien escrita.</li>
+          <li>Prueba ir al inicio y navegar desde ahí.</li>
+          <li>Si esto es de tu app, revisa tus rutas / endpoints.</li>
+        </ul>
+      </div>
+
+      <p class="mt-8 text-xs text-gray-500">
+        Si crees que esto es un error del sistema, avísanos con una captura.
+      </p>
+    </div>
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.5.2/flowbite.min.js"></script>
+</body>
+</html>
