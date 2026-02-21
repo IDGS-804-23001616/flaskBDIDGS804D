@@ -2,7 +2,14 @@ venv/
 __pycache__/
 *.pyc
 .env
-node_modules/
-dist/
-static/dist/
 
+node_modules/
+
+static/
+static/dist/
+static/src
+
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

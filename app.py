@@ -10,8 +10,6 @@ app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
 csrf = CSRFProtect()
 
-
-
 @app.errorhandler(404)
 def not_found(error):
 	return render_template('404.html'), 404
@@ -26,10 +24,38 @@ def index():
     return render_template("index.html",form=create_form, alumno=alumno)
 
 
-@app.route("/Alumnos")
+@app.route("/Alumnos", methods=["GET", "POST"])
+@csrf.exempt
 def alumnos():
-	return render_template("alumnos.html")
+    create_form = forms.UserForm(request.form)
 
+    if request.method == "POST" and create_form.validate():
+        alum = Alumnos(
+            matricula=create_form.matricula.data,
+            nombre=create_form.nombre.data,
+            apellido=create_form.apellido.data,
+            correo=create_form.correo.data
+        )
+        db.session.add(alum)
+        db.session.commit()
+        return redirect(url_for("index"))
+
+    return render_template("alumnos.html", form=create_form)
+
+@app.route("/detalles", methods=["GET", "POST"])
+def detalles():
+    create_form = forms.UserForm(request.form)
+    if request.method == "GET":
+        id = request.args.get("id")
+
+        alum1 = db.session.query(Alumnos).filter(Alumnos.id == id).first()
+
+        id = request.args.get("id")
+        nombre = alum1.nombre
+        apellido = alum1.apellido
+        correo = alum1.correo
+
+    return render_template("detalles.html", nombre=nombre, apellido=apellido, correo=correo)
 
 if __name__ == '__main__':
     csrf.init_app(app)
