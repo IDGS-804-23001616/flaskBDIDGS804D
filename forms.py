@@ -1,15 +1,15 @@
 
 from wtforms import Form, StringField, IntegerField, EmailField
-from wtforms.validators import DataRequired, Length, NumberRange, Email
+from wtforms.validators import DataRequired, Length, Email
 
 
 class UserForm(Form):
 
-    matricula = IntegerField(
+    matricula = StringField(
         "Matrícula",
         [
             DataRequired(message="La matrícula es obligatoria"),
-            NumberRange(min=1, max=10, message="La matrícula debe ser válida")
+            Length(min=6, max=12, message="La matrícula debe tener entre 6 y 12 dígitos")
         ]
     )
 
@@ -34,5 +34,20 @@ class UserForm(Form):
         [
             DataRequired(message="El correo es obligatorio"),
             Email(message="Ingrese un correo válido")
+        ]
+    )
+    
+    telefono = StringField(
+        "Teléfono",
+        [
+          DataRequired(message="El celular es obligatoria"),
+        ]
+    )
+    
+    apellido_materno = StringField(
+        "Apellido",
+        [
+            DataRequired(message="El apellido es obligatorio"),
+            Length(min=2, max=50, message="El apellido debe tener entre 2 y 50 caracteres")
         ]
     )
