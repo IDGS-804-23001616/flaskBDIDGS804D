@@ -8,6 +8,8 @@ node_modules/
 static/
 static/dist/
 static/src
+maestros/__pycache__/
+
 
 .vscode/
 .idea/

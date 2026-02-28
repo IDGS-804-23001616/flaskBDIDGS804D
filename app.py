@@ -3,14 +3,17 @@ from flask_wtf.csrf import CSRFProtect
 from config import DevelopmentConfig
 from flask_migrate import Migrate #agregar referencia de migracion
 from flask import g
+from maestros.routes import maestros
 import forms
 from models import db, Alumnos
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
+app.register_blueprint(maestros)
 db.init_app(app)
-Migrate = Migrate(app, db)#migracion a db
+Migrate = Migrate(app, db)#migracion a db 
 csrf = CSRFProtect()
+
 
 @app.errorhandler(404)
 def not_found(error):

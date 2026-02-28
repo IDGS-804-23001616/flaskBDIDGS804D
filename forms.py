@@ -51,3 +51,4 @@ class UserForm(Form):
             Length(min=2, max=50, message="El apellido debe tener entre 2 y 50 caracteres")
         ]
     )
+
