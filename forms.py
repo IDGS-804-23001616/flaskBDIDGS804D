@@ -45,10 +45,26 @@ class UserForm(Form):
     )
     
     apellido_materno = StringField(
-        "Apellido",
+        "Apellido Materno",
         [
             DataRequired(message="El apellido es obligatorio"),
             Length(min=2, max=50, message="El apellido debe tener entre 2 y 50 caracteres")
+        ]
+    )
+    
+    especialiad = StringField(
+        "especialiad",
+        [
+            DataRequired(message="La especialidad es obligatoria"),
+            Length(min=2, max=50, message="La especialidad debe tener entre 2 y 50 caracteres")
+        ]
+    )
+    
+    apellidos  = StringField(
+        "apellidos",
+        [
+            DataRequired(message="Los apellidos es obligatoria"),
+            Length(min=2, max=50, message="Los apellidos debe tener entre 2 y 50 caracteres")
         ]
     )
 

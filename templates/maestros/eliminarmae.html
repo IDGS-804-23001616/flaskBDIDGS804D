@@ -3,9 +3,8 @@
 {% import '_macros.html' as macros %}
 {{form.csrf_token}}
 
-
 <form method="POST" action="" class="max-w-md mx-auto">
-      <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
 
   <div class="relative z-0 w-full mb-5 group">
     {{ macros.camposNuevos(form.matricula, class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand", placeholder=" ") }}
@@ -26,17 +25,17 @@
   </div>
 
   <div class="relative z-0 w-full mb-5 group">
-    {{ macros.camposNuevos(form.apellido, class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand", placeholder=" ") }}
-    <label for="{{ form.apellido.id }}" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+    {{ macros.camposNuevos(form.apellidos, class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand", placeholder=" ") }}
+    <label for="{{ form.apellidos.id }}" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
       peer-focus:start-0 peer-focus:text-fg-brand
       peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
       peer-focus:scale-75 peer-focus:-translate-y-6">
     </label>
   </div>
-  
+
   <div class="relative z-0 w-full mb-5 group">
-    {{ macros.camposNuevos(form.apellido_materno, class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand", placeholder=" ") }}
-    <label for="{{ form.apellido_materno.id }}" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+    {{ macros.camposNuevos(form.especialiad, class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand", placeholder=" ") }}
+    <label for="{{ form.especialiad.id }}" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
       peer-focus:start-0 peer-focus:text-fg-brand
       peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
       peer-focus:scale-75 peer-focus:-translate-y-6">
@@ -52,20 +51,16 @@
     </label>
   </div>
 
-
-  <div class="relative z-0 w-full mb-5 group">
-    {{ macros.camposNuevos(form.telefono, class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand", placeholder=" ") }}
-    <label for="{{ form.telefono.id }}" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
-      peer-focus:start-0 peer-focus:text-fg-brand
-      peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
-      peer-focus:scale-75 peer-focus:-translate-y-6">
-    </label>
-  </div>
-
- <button type="submit"
-  class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none transition">
-  Guardar
-</button>
+  <button type="submit"
+    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none transition">
+    Eliminar
+  </button>
+  <div class="flex mt-4 gap-4">
+            <a href="/maestros"
+               class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-xs font-medium rounded-base text-sm px-4 py-2.5">
+               Volver
+            </a>
+        </div>
 </form>
 
 {% endblock %}

@@ -3,13 +3,13 @@ from flask_wtf.csrf import CSRFProtect
 from config import DevelopmentConfig
 from flask_migrate import Migrate #agregar referencia de migracion
 from flask import g
-from maestros.routes import maestros
+from maestros import maestros
 import forms
 from models import db, Alumnos
 
 app = Flask(__name__)
 app.config.from_object(DevelopmentConfig)
-app.register_blueprint(maestros)
+app.register_blueprint(maestros, url_prefix="/maestros")
 db.init_app(app)
 Migrate = Migrate(app, db)#migracion a db 
 csrf = CSRFProtect()
@@ -27,25 +27,21 @@ def index():
     alumno = Alumnos.query.all()
     return render_template("index.html",form=create_form, alumno=alumno)
 
-@app.route("/Alumnos", methods=["GET", "POST"])
-@csrf.exempt
+@app.route("/Alumnos", methods = ["GET", "POST"])
 def alumnos():
     create_form = forms.UserForm(request.form)
-
-    if request.method == "POST" and create_form.validate():
+    if request.method == "POST":
         alum = Alumnos(
-            matricula=create_form.matricula.data,
-            nombre=create_form.nombre.data,
-            apellido=create_form.apellido.data,
-            apellido_materno=create_form.apellido.data,
-            correo=create_form.correo.data,
-            telefono=create_form.telefono.data
-        )
+        nombre = create_form.nombre.data,
+        apellido = create_form.apellido.data,
+        correo = create_form.correo.data,
+        matricula = create_form.matricula.data,
+        apellido_materno = create_form.apellido_materno.data,
+        telefono = create_form.telefono.data)
         db.session.add(alum)
         db.session.commit()
         return redirect(url_for("index"))
-
-    return render_template("alumnos.html", form=create_form)
+    return render_template("alumnos.html", form = create_form)
 
 @app.route("/detalles", methods=["GET", "POST"])
 def detalles():
@@ -66,7 +62,6 @@ def detalles():
     return render_template("detalles.html", nombre=nombre, apellido=apellido, correo=correo)
 
 @app.route("/modificar", methods=["GET", "POST"])
-@csrf.exempt
 def modificar():
     create_form = forms.UserForm(request.form)
     id = request.args.get("id")
@@ -95,7 +90,6 @@ def modificar():
     return render_template("modificar.html", form=create_form)
 
 @app.route("/eliminar", methods=["GET", "POST"])
-@csrf.exempt
 def eliminar():
     create_form = forms.UserForm(request.form)
     id = request.args.get("id")
