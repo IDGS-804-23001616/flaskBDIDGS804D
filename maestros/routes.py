@@ -1,6 +1,7 @@
 from . import maestros
-from flask import render_template, request, redirect, url_for
-import forms
+from flask import render_template, request, redirect, url_for, flash
+from sqlalchemy.exc import IntegrityError
+from .forms import MaestroForm
 from models import db, Maestros
 
 
@@ -11,29 +12,37 @@ def perfil(nombre):
 @maestros.route('/', methods=['GET','POST'])
 @maestros.route('/index')
 def index():
-    create_form = forms.UserForm(request.form)
+    create_form = MaestroForm(request.form)
     maestros = Maestros.query.all()
       
-    return render_template('maestros/listadoMaes.html', form=create_form, maestros=maestros)
+    return render_template('maestros/index.html', form=create_form, maestros=maestros)
 
-@maestros.route("/agregar", methods = ["GET", "POST"])
-def maestro():
-    create_form = forms.UserForm(request.form)
-    if request.method == "POST":
+@maestros.route("/agregar", methods=["GET", "POST"])
+def agregar():
+    create_form = MaestroForm(request.form)
+
+    if request.method == "POST" and create_form.validate():
         mae = Maestros(
-        nombre = create_form.nombre.data,
-        apellidos = create_form.apellidos.data,
-        especialiad = create_form.especialiad.data,
-        correo = create_form.correo.data,
-        matricula = create_form.matricula.data)
+            matricula=int(create_form.matricula.data),
+            nombre=create_form.nombre.data,
+            apellidos=create_form.apellidos.data,
+            especialidad=create_form.especialidad.data,
+            correo=create_form.correo.data
+        )
         db.session.add(mae)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("La matricula del maestro ya existe.", "error")
+            return render_template("maestros/agregar.html", form=create_form)
         return redirect(url_for("maestros.index"))
-    return render_template("maestros/agregarMa.html", form = create_form)
+
+    return render_template("maestros/agregar.html", form=create_form)
 
 @maestros.route("/detalles", methods=["GET", "POST"])
-def detallesMae():
-    create_form = forms.UserForm(request.form)
+def detalles():
+    create_form = MaestroForm(request.form)
     if request.method == "GET":
         matricula = request.args.get("id")
         
@@ -43,14 +52,14 @@ def detallesMae():
         nombre = maes.nombre
         apellidos = maes.apellidos
         correo = maes.correo
-        especialiad = maes.especialiad
+        especialidad = maes.especialidad
 
-    return render_template("maestros/detallesmae.html", nombre=nombre, apellidos=apellidos, correo=correo, especialiad=especialiad)
+    return render_template("maestros/detalles.html", nombre=nombre, apellidos=apellidos, correo=correo, especialidad=especialidad)
 
 @maestros.route("/modificar", methods=["GET", "POST"])
-def modificarMae():
+def modificar():
     
-    create_form = forms.UserForm(request.form)
+    create_form = MaestroForm(request.form)
     matricula = request.args.get("id")
     maes = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
 
@@ -59,26 +68,31 @@ def modificarMae():
         create_form.nombre.data = maes.nombre
         create_form.apellidos.data = maes.apellidos
         create_form.correo.data = maes.correo
-        create_form.especialiad.data = maes.especialiad
+        create_form.especialidad.data = maes.especialidad
 
 
-    if request.method == "POST":
+    if request.method == "POST" and create_form.validate():
         maes.matricula = create_form.matricula.data
         maes.nombre = create_form.nombre.data
         maes.apellidos = create_form.apellidos.data
         maes.correo = create_form.correo.data
-        maes.especialiad = create_form.especialiad.data
+        maes.especialidad = create_form.especialidad.data
 
         db.session.add(maes)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("La matricula del maestro ya existe.", "error")
+            return render_template("maestros/modificar.html", form=create_form)
         return redirect(url_for("maestros.index"))
 
-    return render_template("maestros/modificarmae.html", form=create_form)
+    return render_template("maestros/modificar.html", form=create_form)
 
 
 @maestros.route("/eliminar", methods=["GET", "POST"])
-def eliminarMae():
-    create_form = forms.UserForm(request.form)
+def eliminar():
+    create_form = MaestroForm(request.form)
     matricula = request.args.get("id")
     maes = db.session.query(Maestros).filter(Maestros.matricula == matricula).first()
 
@@ -87,12 +101,17 @@ def eliminarMae():
         create_form.nombre.data = maes.nombre
         create_form.apellidos.data = maes.apellidos
         create_form.correo.data = maes.correo
-        create_form.especialiad.data = maes.especialiad
+        create_form.especialidad.data = maes.especialidad
 
 
     if request.method == "POST":
         db.session.delete(maes)
-        db.session.commit()
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            flash("No se puede eliminar el maestro porque tiene cursos relacionados.", "error")
+            return render_template("maestros/eliminar.html", form=create_form)
         return redirect(url_for("maestros.index"))
 
-    return render_template("maestros/eliminarmae.html", form=create_form)
+    return render_template("maestros/eliminar.html", form=create_form)

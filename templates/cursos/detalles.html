@@ -1,0 +1,117 @@
+{% extends 'layout.html' %}
+{% block container %}
+
+<div class="relative bg-neutral-primary-soft max-w-2xl w-full p-6 border border-default rounded-base shadow-xs mx-auto">
+
+    <div class="flex flex-col items-center">
+
+        <div class="w-24 h-24 mb-6 rounded-full bg-blue-500 flex items-center justify-center text-white text-3xl font-bold">
+            {{ curso.nombre[0] }}
+        </div>
+
+        <h5 class="mb-1 text-xl font-semibold tracking-tight text-heading">
+            {{ curso.nombre }}
+        </h5>
+
+        <span class="text-sm text-body">
+            {{ curso.descripcion }}
+        </span>
+
+        <span class="text-sm text-body mb-6">
+            Maestro: {{ curso.maestro.nombre }} {{ curso.maestro.apellidos }}
+        </span>
+
+
+        <div class="mb-4">
+            <a href="{{ url_for('cursos.inscribir', curso_id=curso.id) }}"
+               class="bg-green-500 text-white px-4 py-2 rounded flex items-center gap-2 hover:bg-green-600 inline-flex">
+                Inscribir Alumno
+            </a>
+        </div>
+
+
+        <div class="w-full mt-4">
+
+            <h6 class="text-lg font-semibold text-heading mb-4">
+                Alumnos Inscritos ({{ curso.alumnos|length }})
+            </h6>
+
+            <table class="w-full text-sm text-left text-gray-600">
+
+                <thead class="text-xs text-gray-700 uppercase bg-blue-50">
+                    <tr>
+                        <th class="px-6 py-3">Nombre</th>
+                        <th class="px-6 py-3">Matrícula</th>
+                        <th class="px-6 py-3">Correo</th>
+                        <th class="px-6 py-3">Acciones</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    {% for alumno in curso.alumnos %}
+
+                    <tr class="bg-white border-b border-blue-100">
+
+                        <td class="px-6 py-4 font-medium text-gray-900">
+                            {{ alumno.nombre }} {{ alumno.apellido }}
+                        </td>
+
+                        <td class="px-6 py-4">
+                            {{ alumno.matricula }}
+                        </td>
+
+                        <td class="px-6 py-4">
+                            {{ alumno.correo }}
+                        </td>
+
+                        <td class="px-6 py-4">
+
+                            <form method="POST"
+                                  action="{{ url_for('cursos.desinscribir', curso_id=curso.id, alumno_id=alumno.id) }}"
+                                  style="display:inline;">
+
+                                <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+
+                                <button type="submit"
+                                        class="text-red-600 hover:underline">
+                                    Desinscribir
+                                </button>
+
+                            </form>
+
+                        </td>
+
+                    </tr>
+
+                    {% else %}
+
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-gray-500">
+                            No hay alumnos inscritos
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+
+        <div class="flex mt-6">
+
+            <a href="{{ url_for('cursos.index') }}"
+               class="text-white bg-blue-600 hover:bg-blue-700 rounded text-sm px-4 py-2.5">
+               Volver
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

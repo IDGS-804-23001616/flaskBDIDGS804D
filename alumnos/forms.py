@@ -3,7 +3,7 @@ from wtforms import Form, StringField, IntegerField, EmailField
 from wtforms.validators import DataRequired, Length, Email
 
 
-class UserForm(Form):
+class AlumnoForm(Form):
 
     matricula = StringField(
         "Matrícula",
@@ -22,15 +22,23 @@ class UserForm(Form):
     )
 
     apellido = StringField(
-        "Apellido",
+        "Apellido Paterno",
         [
-            DataRequired(message="El apellido es obligatorio"),
+            DataRequired(message="El apellido paterno es obligatorio"),
+            Length(min=2, max=50, message="El apellido debe tener entre 2 y 50 caracteres")
+        ]
+    )
+
+    apellido_materno = StringField(
+        "Apellido Materno",
+        [
+            DataRequired(message="El apellido materno es obligatorio"),
             Length(min=2, max=50, message="El apellido debe tener entre 2 y 50 caracteres")
         ]
     )
 
     correo = EmailField(
-        "Correo",
+        "Correo Electrónico",
         [
             DataRequired(message="El correo es obligatorio"),
             Email(message="Ingrese un correo válido")
@@ -40,31 +48,7 @@ class UserForm(Form):
     telefono = StringField(
         "Teléfono",
         [
-          DataRequired(message="El celular es obligatoria"),
+          DataRequired(message="El teléfono es obligatorio"),
+          Length(min=10, max=10, message="El teléfono debe tener 10 dígitos")
         ]
     )
-    
-    apellido_materno = StringField(
-        "Apellido Materno",
-        [
-            DataRequired(message="El apellido es obligatorio"),
-            Length(min=2, max=50, message="El apellido debe tener entre 2 y 50 caracteres")
-        ]
-    )
-    
-    especialiad = StringField(
-        "especialiad",
-        [
-            DataRequired(message="La especialidad es obligatoria"),
-            Length(min=2, max=50, message="La especialidad debe tener entre 2 y 50 caracteres")
-        ]
-    )
-    
-    apellidos  = StringField(
-        "apellidos",
-        [
-            DataRequired(message="Los apellidos es obligatoria"),
-            Length(min=2, max=50, message="Los apellidos debe tener entre 2 y 50 caracteres")
-        ]
-    )
-

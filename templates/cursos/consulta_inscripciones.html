@@ -1,0 +1,103 @@
+{% extends 'layout.html' %}
+{% block container %}
+<div class="py-6 relative overflow-x-auto sm:rounded-lg">
+    <div class="mb-4 flex items-center justify-between gap-3 flex-wrap">
+        <h2 class="text-xl font-semibold text-gray-800">Consulta de Inscripciones</h2>
+        <a href="{{ url_for('cursos.index') }}"
+           class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">
+            Volver
+        </a>
+    </div>
+
+    <form method="GET" action="{{ url_for('cursos.consulta_inscripciones') }}" class="mb-4">
+        <div class="flex gap-2 flex-wrap items-end">
+            <div>
+                <label for="curso_id" class="block text-sm text-gray-700 mb-1">Curso</label>
+                <select id="curso_id" name="curso_id" class="border border-blue-200 rounded px-3 py-2 min-w-48">
+                    <option value="">Todos</option>
+                    {% for curso in cursos_options %}
+                        <option value="{{ curso.id }}" {% if selected_curso_id == curso.id|string %}selected{% endif %}>
+                            {{ curso.nombre }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="maestro_id" class="block text-sm text-gray-700 mb-1">Maestro</label>
+                <select id="maestro_id" name="maestro_id" class="border border-blue-200 rounded px-3 py-2 min-w-56">
+                    <option value="">Todos</option>
+                    {% for maestro in maestros_options %}
+                        <option value="{{ maestro.matricula }}" {% if selected_maestro_id == maestro.matricula|string %}selected{% endif %}>
+                            {{ maestro.nombre }} {{ maestro.apellidos }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label for="alumno_id" class="block text-sm text-gray-700 mb-1">Alumno</label>
+                <select id="alumno_id" name="alumno_id" class="border border-blue-200 rounded px-3 py-2 min-w-56">
+                    <option value="">Todos</option>
+                    {% for alumno in alumnos_options %}
+                        <option value="{{ alumno.id }}" {% if selected_alumno_id == alumno.id|string %}selected{% endif %}>
+                            {{ alumno.nombre }} {{ alumno.apellido }}
+                        </option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600">
+                Filtrar
+            </button>
+            <a href="{{ url_for('cursos.consulta_inscripciones') }}"
+               class="bg-gray-500 text-white px-4 py-2 rounded hover:bg-gray-600">
+                Limpiar
+            </a>
+        </div>
+    </form>
+
+    <table class="py-2 w-full text-sm text-left rtl:text-right text-gray-600">
+        <thead class="text-xs text-gray-700 uppercase bg-blue-50">
+            <tr>
+                <th scope="col" class="px-6 py-3">Curso</th>
+                <th scope="col" class="px-6 py-3">Docente</th>
+                <th scope="col" class="px-6 py-3">Alumnos Inscritos</th>
+                <th scope="col" class="px-6 py-3">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in inscripciones %}
+            <tr class="bg-white border-b border-blue-100">
+                <td class="px-6 py-4 font-medium text-gray-900">{{ item.curso.nombre }}</td>
+                <td class="px-6 py-4">
+                    {% if item.maestro %}
+                        {{ item.maestro.nombre }} {{ item.maestro.apellidos }}
+                    {% else %}
+                        Sin docente asignado
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4">
+                    {% if item.alumnos %}
+                        <ul class="list-disc pl-5">
+                            {% for alumno in item.alumnos %}
+                                <li>{{ alumno.nombre }} {{ alumno.apellido }}</li>
+                            {% endfor %}
+                        </ul>
+                    {% else %}
+                        No hay alumnos inscritos
+                    {% endif %}
+                </td>
+                <td class="px-6 py-4">{{ item.alumnos|length }}</td>
+            </tr>
+            {% else %}
+            <tr class="bg-white border-b border-blue-100">
+                <td colspan="4" class="px-6 py-6 text-center text-gray-500">
+                    No se encontraron resultados.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

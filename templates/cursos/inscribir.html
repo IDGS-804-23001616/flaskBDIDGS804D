@@ -1,0 +1,52 @@
+{% extends 'layout.html' %}
+{% block container %}
+
+<form method="POST" action="" class="max-w-md mx-auto" novalidate>
+    <input type="hidden" name="csrf_token" value="{{csrf_token()}}">
+
+  <div class="mb-5">
+    <label class="block text-sm text-body mb-1">Curso</label>
+    <div class="w-full rounded border border-default-medium bg-gray-50 px-3 py-2 text-sm text-heading">
+      {{ curso.nombre }}
+    </div>
+  </div>
+
+  {% if alumnos %}
+  <div class="relative z-0 w-full mb-5 group">
+    <select name="alumno_id" id="alumno_id" 
+            class="peer block py-2.5 px-0 w-full text-sm text-heading bg-transparent border-0 border-b-2 border-default-medium appearance-none focus:outline-none focus:ring-0 focus:border-brand"
+            required>
+        <option value="">Selecciona un alumno</option>
+        {% for alumno in alumnos %}
+        <option value="{{ alumno.id }}">
+            {{ alumno.matricula }} - {{ alumno.nombre }} {{ alumno.apellido }}
+        </option>
+        {% endfor %}
+    </select>
+    <label for="alumno_id" class="absolute text-sm text-body duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0]
+      peer-focus:start-0 peer-focus:text-fg-brand
+      peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0
+      peer-focus:scale-75 peer-focus:-translate-y-6">
+      Alumno
+    </label>
+  </div>
+
+  <button type="submit"
+    class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-xs font-medium leading-5 rounded-base text-sm px-4 py-2.5 focus:outline-none transition">
+    Inscribir
+  </button>
+  {% else %}
+  <div class="bg-yellow-50 border border-yellow-200 rounded p-4 mb-4">
+    <p class="text-gray-700">No hay alumnos disponibles para inscribir.</p>
+  </div>
+  {% endif %}
+
+  <div class="flex mt-4 gap-4">
+            <a href="/cursos"
+               class="text-white bg-blue-600 hover:bg-blue-700 focus:ring-4 focus:ring-blue-300 shadow-xs font-medium rounded-base text-sm px-4 py-2.5">
+               Volver
+            </a>
+        </div>
+</form>
+
+{% endblock %}

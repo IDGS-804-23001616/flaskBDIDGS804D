@@ -2,12 +2,9 @@ import os
 
 from sqlalchemy import create_engine
 
-
 class Config(object):
     SECRET_KEY = 'Clave_Secreta'
     SESSION_COOKIE_SECURE = False
-
-
 
 class DevelopmentConfig(Config):
     DEBUG = True

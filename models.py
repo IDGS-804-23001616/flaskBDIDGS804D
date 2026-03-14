@@ -15,26 +15,28 @@ class Alumnos(db.Model):
                             default=datetime.datetime.now)
     
     cursos = db.relationship(
-        'Curso',
+        'Cursos',
         secondary = 'inscripciones',
         back_populates = 'alumnos'
     )
     
 class Maestros(db.Model):
     __tablename__ = 'maestros'
-    matricula = db.Column(db.Integer, primary_key=True)
+    matricula = db.Column(db.Integer, primary_key=True, unique=True)
     nombre = db.Column(db.String(50))
     apellidos = db.Column(db.String(50))
-    especialiad = db.Column(db.String(50))
+    especialidad = db.Column(db.String(50))
     correo = db.Column(db.String(50))
-    cursos = db.Column(db.DateTime, default=datetime.datetime.now)
+    created_date = db.Column(db.DateTime, default=datetime.datetime.now)
+    
+    cursos = db.relationship('Cursos', back_populates='maestro')
 
 
 class Cursos(db.Model):
     __tablename__ = 'cursos'
     id = db.Column(db.Integer, primary_key=True)
     nombre = db.Column(db.String(150), nullable=False)
-    descipcion = db.Column(db.Text)
+    descripcion = db.Column(db.Text)
     maestro_id = db.Column(
         db.Integer,
         db.ForeignKey('maestros.matricula'),
